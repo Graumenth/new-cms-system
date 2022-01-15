@@ -11,7 +11,7 @@
     <title>Blog Home - Start Bootstrap Template</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="{{asset('vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset('vendor/bootstrap/css/bootstrap.css')}}" rel="stylesheet">
 
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
 
@@ -36,9 +36,15 @@
                         <span class="sr-only">(current)</span>
                     </a>
                 </li>
+                @if(Auth::check())
                 <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
+                    <a class="nav-link" href="{{route('admin.index')}}">Admin</a>
                 </li>
+                @else
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link" href="#">Services</a>
                 </li>
@@ -136,8 +142,8 @@
 </footer>
 
 <!-- Bootstrap core JavaScript -->
-<script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
-<script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{asset('vendor/jquery/jquery.js')}}"></script>
+<script src="{{asset('vendor/bootstrap/js/bootstrap.bundle.js')}}"></script>
 
 </body>
 
