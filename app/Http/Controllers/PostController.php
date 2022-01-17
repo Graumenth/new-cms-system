@@ -14,6 +14,10 @@ class PostController extends Controller
      * @mixin Builder
      */
 
+    public function index(){
+        return view('admin.posts.index');
+    }
+
     public function show(Post $post){
         return view('blog-post', ['post' => $post]);
     }
