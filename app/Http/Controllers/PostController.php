@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class PostController extends Controller
 {
@@ -27,7 +28,7 @@ class PostController extends Controller
         return view('admin.posts.create');
     }
 
-    public function store(Request $request){
+    public function store(){
         $inputs = \request()->validate([
             'title' => 'required|min:8|max:255',
             'file' => 'file',
@@ -38,7 +39,17 @@ class PostController extends Controller
             $inputs['post_image'] = \request('post_image')->store('images');
         }
 
-        auth()->user()->posts()->create($inputs);
+        if(auth()->user()->posts()->create($inputs)){
+            \session()->flash('message-post-created', 'Post named '.$inputs['title'].' was successfully created');
+        }else{
+            \session()->flash('message-post-failed', 'There was a problem with adding the post');
+        }
+        return redirect()->route('admin.posts.index');
+    }
+
+    public function destroy(Post $post){
+        $post->delete();
+        Session::flash('message', 'The post was deleted');
         return back();
     }
 }
