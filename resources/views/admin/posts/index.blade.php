@@ -11,27 +11,30 @@
                         <thead>
                             <tr>
                                 <th>Id</th>
+                                <th>Owner</th>
                                 <th>Title</th>
                                 <th>Image</th>
                                 <th>Created at</th>
-                                <th>UIpdated at</th>
+                                <th>Updated at</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th>Id</th>
+                                <th>Owner</th>
                                 <th>Title</th>
                                 <th>Image</th>
                                 <th>Created at</th>
-                                <th>UIpdated at</th>
+                                <th>Updated at</th>
                             </tr>
                         </tfoot>
                         <tbody>
                         @foreach($posts as $post)
                             <tr>
                                 <td>{{$post->id}}</td>
+                                <td>{{$post->user->name}}</td>
                                 <td>{{$post->title}}</td>
-                                <td><img src="{{$post->post_image}}" alt="" height="40px"></td>
+                                <td><img src="{{$post->post_image}}" alt="{{$post->post_image}}" height="40px"></td>
                                 <td>{{$post->created_at}}</td>
                                 <td>{{$post->updated_at}}</td>
                             </tr>
