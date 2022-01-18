@@ -52,4 +52,8 @@ class PostController extends Controller
         Session::flash('message', 'The post was deleted');
         return back();
     }
+
+    public function edit(Post $post){
+        return view('admin.posts.edit', ['post' => $post]);
+    }
 }
