@@ -1,6 +1,28 @@
 <x-admin-master>
     @section('content')
         <h1>All Posts</h1>
+        @if(\Illuminate\Support\Facades\Session::has('message'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{\Illuminate\Support\Facades\Session::get('message')}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @elseif(session('message-post-created'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{session('message-post-created')}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @elseif(session('message-post-failed'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{session('message-post-failed')}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
         <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
@@ -16,6 +38,7 @@
                                 <th>Image</th>
                                 <th>Created at</th>
                                 <th>Updated at</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -26,6 +49,7 @@
                                 <th>Image</th>
                                 <th>Created at</th>
                                 <th>Updated at</th>
+                                <th>Delete</th>
                             </tr>
                         </tfoot>
                         <tbody>
@@ -34,9 +58,16 @@
                                 <td>{{$post->id}}</td>
                                 <td>{{$post->user->name}}</td>
                                 <td>{{$post->title}}</td>
-                                <td><img src="{{$post->post_image}}" alt="{{$post->post_image}}" height="40px"></td>
+                                <td><img src="{{$post->post_image}}" alt="" height="40px"></td>
                                 <td>{{$post->created_at}}</td>
                                 <td>{{$post->updated_at}}</td>
+                                <td>
+                                    <form method="post" action="{{route('admin.posts.destroy', $post->id)}}" enctype="multipart/form-data">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-danger">Delete</button>
+                                    </form>
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>
