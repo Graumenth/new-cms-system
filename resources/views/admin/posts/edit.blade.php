@@ -1,8 +1,9 @@
 <x-admin-master>
     @section('content')
         <h1>Edit a post</h1>
-        <form method="post" action="{{route('admin.posts.store')}}" enctype="multipart/form-data">
+        <form method="post" action="{{route('admin.posts.update', [$post->id])}}" enctype="multipart/form-data">
             @csrf
+            @method('PATCH')
             <div class="form-group">
                 <label for="title">Title</label>
                 <input type="text" name="title" class="form-control" id="title" aria-describedby="" value="{{$post->title}}">
