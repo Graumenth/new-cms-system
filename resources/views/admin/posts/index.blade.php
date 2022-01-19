@@ -57,7 +57,7 @@
                             <tr>
                                 <td>{{$post->id}}</td>
                                 <td>{{$post->user->name}}</td>
-                                <td>{{$post->title}}</td>
+                                <td><a href="{{route('admin.posts.edit', $post->id)}}">{{$post->title}}</a></td>
                                 <td><img src="{{$post->post_image}}" alt="" height="40px"></td>
                                 <td>{{$post->created_at}}</td>
                                 <td>{{$post->updated_at}}</td>

@@ -52,4 +52,40 @@ class PostController extends Controller
         Session::flash('message', 'The post was deleted');
         return back();
     }
+
+    public function edit(Post $post){
+        return view('admin.posts.edit', ['post' => $post]);
+    }
+
+    public function update(Post $post){
+        $inputs = \request()->validate([
+            'title' => 'required|min:8|max:255',
+            'file' => 'file',
+            'body' => 'required'
+        ]);
+
+        if (\request('post_image')){
+            $inputs['post_image'] = \request('post_image')->store('images');
+            $post->post_image = $inputs['post_image'];
+        }
+
+        $post->title = $inputs['title'];
+        $post->body = $inputs['body'];
+
+//        auth()->user()->posts()->save($post)
+//        $post->save()
+//        $post->update(
+//            $inputs = \request()->validate([
+//                'title' => 'required|min:8|max:255',
+//                'file' => 'file',
+//                'body' => 'required'
+//            ]));
+
+        if($post->save()){
+            \session()->flash('message-post-created', 'Post named '.$inputs['title'].' was successfully updated');
+        }else{
+            \session()->flash('message-post-failed', 'There was a problem with updating the post');
+        }
+        return redirect()->route('admin.posts.index');
+    }
 }
