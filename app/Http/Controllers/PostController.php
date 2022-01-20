@@ -16,7 +16,7 @@ class PostController extends Controller
      */
 
     public function index(){
-        $posts = Post::all();
+        $posts = auth()->user()->posts();
         return view('admin.posts.index', ['posts' => $posts]);
     }
 
@@ -48,6 +48,9 @@ class PostController extends Controller
     }
 
     public function destroy(Post $post){
+//        if(auth()->user()->id !== $post->user_id){
+//
+//        }
         $post->delete();
         Session::flash('message', 'The post was deleted');
         return back();
