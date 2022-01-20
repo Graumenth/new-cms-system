@@ -27,7 +27,7 @@ class PostController extends Controller
 
 //        $posts = \auth()->user()->posts; just another way of using.
 //        $posts = Auth::user()->posts()->get();
-        $posts = Auth::user()->posts;
+        $posts = Auth::user()->posts()->paginate(5);
 
         return view('admin.posts.index', ['posts' => $posts]);
     }
