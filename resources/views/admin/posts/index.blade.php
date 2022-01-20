@@ -62,11 +62,13 @@
                                 <td>{{$post->created_at}}</td>
                                 <td>{{$post->updated_at}}</td>
                                 <td>
+                                    @can('view', $post)
                                     <form method="post" action="{{route('admin.posts.destroy', $post->id)}}" enctype="multipart/form-data">
                                         @csrf
                                         @method('DELETE')
                                         <button class="btn btn-danger">Delete</button>
                                     </form>
+                                    @endcan
                                 </td>
                             </tr>
                         @endforeach

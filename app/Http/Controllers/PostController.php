@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class PostController extends Controller
@@ -16,7 +18,17 @@ class PostController extends Controller
      */
 
     public function index(){
-        $posts = auth()->user()->posts();
+//        $posts = Post::all(); shows all posts but we need only user's posts
+
+//        $posts = Auth::user()->posts(); displays relation
+
+//        $user_id = 31;
+//        $posts = Post::where('user_id', $user_id)->get();  this is too specific
+
+//        $posts = \auth()->user()->posts; just another way of using.
+//        $posts = Auth::user()->posts()->get();
+        $posts = Auth::user()->posts;
+
         return view('admin.posts.index', ['posts' => $posts]);
     }
 
@@ -29,6 +41,8 @@ class PostController extends Controller
     }
 
     public function store(){
+        $this->authorize('create', Post::class);
+
         $inputs = \request()->validate([
             'title' => 'required|min:8|max:255',
             'file' => 'file',
@@ -51,12 +65,15 @@ class PostController extends Controller
 //        if(auth()->user()->id !== $post->user_id){
 //
 //        }
+        $this->authorize('delete', $post);
         $post->delete();
         Session::flash('message', 'The post was deleted');
         return back();
     }
 
     public function edit(Post $post){
+//        $this->authorize('view', $post);
+//        if(\auth()->user()->can('view', $post)){}
         return view('admin.posts.edit', ['post' => $post]);
     }
 
@@ -83,6 +100,8 @@ class PostController extends Controller
 //                'file' => 'file',
 //                'body' => 'required'
 //            ]));
+
+        $this->authorize('update', $post);
 
         if($post->save()){
             \session()->flash('message-post-created', 'Post named '.$inputs['title'].' was successfully updated');
