@@ -41,6 +41,8 @@ class PostController extends Controller
     }
 
     public function store(){
+        $this->authorize('create', Post::class);
+
         $inputs = \request()->validate([
             'title' => 'required|min:8|max:255',
             'file' => 'file',
@@ -63,6 +65,7 @@ class PostController extends Controller
 //        if(auth()->user()->id !== $post->user_id){
 //
 //        }
+        $this->authorize('delete', $post);
         $post->delete();
         Session::flash('message', 'The post was deleted');
         return back();
